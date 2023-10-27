@@ -6,7 +6,7 @@ Classe position (pour gérer la position de tous les objets et pelos)
 
 Class Aventurier :
 -	Int Pv
--	Int Pf
+-	Int  Pf
 -	Int Bourse
 -	Class Epee
 -	Class Armure
