@@ -1,4 +1,4 @@
-Classes :
+Classes : waf
 
 Classe position (pour gérer la position de tous les objets et pelos)
 -	X
