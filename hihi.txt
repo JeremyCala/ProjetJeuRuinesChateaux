@@ -1,0 +1,42 @@
+Classes :
+
+Classe position (pour gérer la position de tous les objets et pelos)
+-	X
+-	Y
+
+Class Aventurier :
+-	Int Pv
+-	Int Pf
+-	Int Bourse
+-	Class Epee
+-	Class Armure
+-	position
+
+Classe objet ? class abstraite parent de epee et armure
+Class Epee :
+-	Ps
+Class Armure :
+-	Ps
+Class Monstre
+-	Pv
+-	Ps
+-	Position
+Classe Monstre aveugle : public Monstre
+Classe Monstre voyant : public Monstre
+
+Classe Niveau
+-	un tableau pour la carte (Bien si une grande carte carrée, si on fait pleins de petites salle mieux vaut mettre une classe Room avec chacune des cartes)
+-	Aventurier
+-	Tableau de monstre
+
+
+Classe screener (le truc graphique) 
+-	Taille ecran x
+-	Taille ecran y
+-	AfficheNiveau
+-	AfficheAventurier
+
+Classe Jeu (gere le lien entre le menu, les niveaux tout ça)
+-	Tableau de niveau
+
+
