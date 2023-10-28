@@ -15,6 +15,10 @@ public:
   int getArmor() const;
   position getPos() const;
   bool getAmulet() const;
+  void reparsword(int coin);
+  void repararmor(int coin);
+  void move(position pos);
+  void attaqued(int strenght);
 private:
   int d_hp, d_str, d_sword, d_armor, d_purse;
   bool d_amulet;
