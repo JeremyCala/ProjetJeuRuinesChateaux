@@ -8,21 +8,19 @@ Class Aventurier :
 -	Int Pv
 -	Int Pf
 -	Int Bourse
--	Class Epee
--	Class Armure
+-	int ps_sword
+-	int ps_armor
+-	bool amulet (true si l'aventurier a l'aumlette sinon false)
 -	position
 
-Classe objet ? class abstraite parent de epee et armure
-Class Epee :
--	Ps
-Class Armure :
--	Ps
+pas besoin de classe objet il y a juste besoin de int pour les ps
+
 Class Monstre
 -	Pv
 -	Ps
 -	Position
-Classe Monstre aveugle : public Monstre
-Classe Monstre voyant : public Monstre
+
+Classe Monstre aveugle : public Monstre (les deplacements changeront)
 
 Classe Niveau
 -	un tableau pour la carte (Bien si une grande carte carrée, si on fait pleins de petites salle mieux vaut mettre une classe Room avec chacune des cartes)
@@ -31,12 +29,13 @@ Classe Niveau
 
 
 Classe screener (le truc graphique) 
--	Taille ecran x
+-	Taille ecran x (si graphics.h il y a)
 -	Taille ecran y
 -	AfficheNiveau
 -	AfficheAventurier
 
 Classe Jeu (gere le lien entre le menu, les niveaux tout ça)
 -	Tableau de niveau
+-	bool des differentes boucle
 
 
