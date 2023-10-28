@@ -16,9 +16,12 @@ Class Aventurier :
 pas besoin de classe objet il y a juste besoin de int pour les ps
 
 Class Monstre
--	Pv
--	Ps
--	Position
+-	int lifepoint()
+-	int strenght()
+-   int percentSkill()
+-	position getPosition()
+-   void move(const position& aventurerPosition); 
+-   void attaqued(int strenght);
 
 Classe Monstre aveugle : public Monstre (les deplacements changeront)
 
