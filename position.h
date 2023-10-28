@@ -4,13 +4,16 @@
 class position
 {
 public:
+    /* Constructor */
     position();
     position(int x, int y);
     position(const position &pos);
 
+    /* Getter */
     int getX() const;
     int getY() const;
 
+    /* Setter */
     void setX(int x);
     void setY(int y);
 private:

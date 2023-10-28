@@ -1,8 +1,12 @@
 #include "position.h"
 #include "monster.h"
 
+monster::monster(): d_hp{0}, d_str{0}, d_pSkill{0.0}, d_pos{0,0} {}
 
-int monster::lifepoint() const  { return d_lp; }
+monster::monster(int hp, int str, double pSkill, int x, int y):
+    d_hp{hp}, d_str{str}, d_pSkill{pSkill}, d_pos{x,y} {}
+
+int monster::lifepoint() const  { return d_hp; }
 
 int monster::strenght() const  { return d_str; }
 
@@ -10,7 +14,7 @@ int monster::percentSkill() const  { return d_pSkill; }
 
 position monster::getPosition() const { return d_pos; }
 
-void monster::move(const position& aventurerPosition)
+void monster::move(const position& adventurerPosition)
 {
     // se déplace d’une case (horizontal ou vertical) vers l’aventurier 
     // si celui-ci est à moins de huit cases
@@ -19,8 +23,8 @@ void monster::move(const position& aventurerPosition)
 
 void monster::attaqued(int strenght)
 {
-    d_lp -= strenght;
-    if (d_lp<0) d_lp = 0;
+    d_hp -= strenght;
+    if (d_hp<0) d_hp = 0;
 }
 
 void blindMonster::move()

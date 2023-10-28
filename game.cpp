@@ -40,8 +40,6 @@ void game::menuLoop()
             break;
 
         }
-
-
     }
 }
 
