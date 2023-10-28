@@ -30,12 +30,12 @@ void adventurer::repararmor(int coin)
   d_purse -= coin;
 }
 
-void adventurer::attaqued(int strength)
+void adventurer::attaqued(int str)
 {
-    int pointabsorbe = (3*strength)/4;
-    d_armor -= pointabsorbe;
+    int damage = (3*str)/4;
+    d_armor -= damage;
     if(d_armor < 0)
-        d_hp -= (d_armor + (strength-pointabsorbe));
+        d_hp -= (d_armor + (str-damage));
     else
-        d_hp -= (strength-pointabsorbe);
+        d_hp -= (str - damage);
 }
