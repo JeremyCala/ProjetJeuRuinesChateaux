@@ -16,4 +16,21 @@ int adventure::getArmor() const { return d_purse; }
 
 position adventure::getPos() const { return d_pos; }
 
-bool adventure::getAmulet() const { return d_amulet;}
+bool adventure::getAmulet() const { return d_amulet; }
+
+void adventure::reparsword(int coin) 
+{
+  d_purse -= coin;
+  d_sword += coin;
+}
+
+void adventure::repararmor(int coin) 
+{
+  d_purse -= coin;
+  d_armor += coin;
+}
+
+void adventure::attaqued(int strength)
+{
+
+}
