@@ -1,6 +1,7 @@
-#include "game.h"
 #include <iostream>
+#include "game.h"
 
+// g++ *.cpp -o test
 
 int main()
 {

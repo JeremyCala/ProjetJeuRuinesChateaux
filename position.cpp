@@ -10,4 +10,4 @@ int position::getX() const {return d_x;}
 int position::getY() const {return d_y;}
 
 void position::setX(int x) {d_x = x;}
-void position::setY(int y) {d_x = y;}
+void position::setY(int y) {d_y = y;}
