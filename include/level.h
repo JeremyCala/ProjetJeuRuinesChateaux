@@ -25,6 +25,8 @@ public:
     room getRoom(int n) const;
     int getNbMonsters() const;
     const std::unique_ptr<monster>& getMonster(int n) const;
+    position getposAmulet() const;
+    position getposExit() const;
 
     /* Methods */
     void initLevel();
