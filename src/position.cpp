@@ -11,3 +11,9 @@ int position::getY() const {return d_y;}
 
 void position::setX(int x) {d_x = x;}
 void position::setY(int y) {d_y = y;}
+
+void position::set(int x, int y) 
+{
+    d_x = x;
+    d_y = y;
+}

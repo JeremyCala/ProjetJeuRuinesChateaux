@@ -16,6 +16,7 @@ public:
     /* Setter */
     void setX(int x);
     void setY(int y);
+    void set(int x, int y);
 private:
     int d_x, d_y;
 };

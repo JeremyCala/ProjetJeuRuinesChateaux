@@ -1,8 +1,6 @@
 #ifndef ADVENTURER_H
 #define ADVENTURER_H
 
-#include"position.h"
-
 class position;
 
 class adventurer

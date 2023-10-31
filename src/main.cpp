@@ -1,7 +1,8 @@
 #include <iostream>
 #include "game.h"
 
-// g++ *.cpp -o test
+
+// g++ -I include -L lib src/*.cpp -o test -lpdcurses
 
 int main()
 {
