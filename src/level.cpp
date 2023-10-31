@@ -40,3 +40,13 @@ const std::unique_ptr<monster>& level::getMonster(int n) const
 }
 
 //getposmonster
+
+position level::getposAmulet() const 
+{
+    return d_amulet;
+}
+
+position level::getposExit() const
+{
+    return d_exit;
+}
