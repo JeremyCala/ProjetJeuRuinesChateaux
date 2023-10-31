@@ -14,7 +14,8 @@ public :
     int lifepoint() const;
     int strenght() const;
     int percentSkill() const;
-    position getPosition() const;
+    int getX() const;
+    int getY() const;
 
     /*Methods*/
     void move(const position& adventurerPosition); 
@@ -29,6 +30,7 @@ private :
 class blindMonster : public monster
 {
 public :
+    blindMonster(int hp, int str, double pSkill, int x, int y);
     void move();
 };
 

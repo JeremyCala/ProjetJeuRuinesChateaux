@@ -12,7 +12,8 @@ int monster::strenght() const  { return d_str; }
 
 int monster::percentSkill() const  { return d_pSkill; }
 
-position monster::getPosition() const { return d_pos; }
+int monster::getX() const { return d_pos.getX(); }
+int monster::getY() const { return d_pos.getY(); }
 
 void monster::move(const position& adventurerPosition)
 {
@@ -26,6 +27,9 @@ void monster::attaqued(int strenght)
     d_hp -= strenght;
     if (d_hp<0) d_hp = 0;
 }
+
+blindMonster::blindMonster(int hp, int str, double pSkill, int x, int y) : 
+                           monster{hp,str,pSkill,x,y} {}
 
 void blindMonster::move()
 {

@@ -14,7 +14,8 @@ int adventurer::getSword() const { return d_sword; }
 
 int adventurer::getArmor() const { return d_armor; }
 
-position adventurer::getPos() const { return d_pos; }
+int adventurer::getX() const { return d_pos.getX(); }
+int adventurer::getY() const { return d_pos.getY(); }
 
 bool adventurer::getAmulet() const { return d_amulet; }
 
@@ -30,12 +31,17 @@ void adventurer::repararmor(int coin)
   d_purse -= coin;
 }
 
+void adventurer::move(int x, int y)
+{
+  d_pos.set(x, y);
+}
+
 void adventurer::attaqued(int str)
 {
-    int damage = (3*str)/4;
-    d_armor -= damage;
-    if(d_armor < 0)
-        d_hp -= (d_armor + (str-damage));
-    else
-        d_hp -= (str - damage);
+  int damage = (3*str)/4;
+  d_armor -= damage;
+  if(d_armor < 0)
+    d_hp -= (d_armor + (str-damage));
+  else
+    d_hp -= (str - damage);
 }

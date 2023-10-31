@@ -19,10 +19,12 @@ public:
     /* Constructor */
     level();
 
-    /* Constructor */
+    /* Getters */
+    adventurer getPlayer() const;
     int getNbRooms() const;
     room getRoom(int n) const;
     int getNbMonsters() const;
+    const std::unique_ptr<monster>& getMonster(int n) const;
 
     /* Methods */
     void initLevel();

@@ -9,19 +9,20 @@ public:
   /* Constructor */
   adventurer(int hp, int str, int sword, int armor, bool amulet);
 
-  /* getter */
+  /* Getters */
   int getHp() const;
   int getStr() const;
   int getPurse() const;
   int getSword() const;
   int getArmor() const;
-  position getPos() const;
+  int getX() const;
+  int getY() const;
   bool getAmulet() const;
 
-  /* methods */
+  /* Methods */
   void reparsword(int coin);
   void repararmor(int coin);
-  void move(position pos);
+  void move(int x, int y);
   void attaqued(int strenght);
 private:
   int d_hp, d_str, d_sword, d_armor, d_purse = 0;
