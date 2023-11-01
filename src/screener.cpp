@@ -22,6 +22,20 @@ void screener::showRoom(const room& r) const
     }
 }
 
+void screener::showPlayer(const adventurer &a) const
+{
+    mvprintw(a.getY(), a.getX(), "@");
+}
+
+void screener::showMonsters(const level &l) const
+{
+    for (int i = 0; i< l.getNbMonsters(); ++i) 
+    {
+        const auto& currentMonster = l.getMonster(i);
+        mvprintw(currentMonster->getY(), currentMonster->getX(),"M");
+    }
+}
+
 void screener::showLevel(const level &l) const
 {
     clear();
@@ -31,14 +45,8 @@ void screener::showLevel(const level &l) const
     for(int i = 0;i < l.getNbRooms(); ++i)
         showRoom(l.getRoom(i));
 
-    mvprintw(l.getPlayer().getY(), l.getPlayer().getX(),"@"); //affiche le joueur
-
-    for (int i = 0; i< l.getNbMonsters(); ++i) //affiche les monstres
-    {
-        const auto& currentMonster = l.getMonster(i);
-        mvprintw(currentMonster->getY(), currentMonster->getX(),"M");
-    }
-        
+    showPlayer(l.getPlayer());
+    showMonsters(l);
     refresh();    
-
 }
+
