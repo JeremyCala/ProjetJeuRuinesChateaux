@@ -33,7 +33,7 @@ void adventurer::repararmor(int coin)
 
 void adventurer::move(int x, int y)
 {
-  d_pos.set(x, y);
+  d_pos.moveFrom(x, y);
 }
 
 void adventurer::attaqued(int str)

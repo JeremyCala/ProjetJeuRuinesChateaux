@@ -18,7 +18,7 @@ public :
     int getY() const;
 
     /*Methods*/
-    void move(const position& adventurerPosition); 
+    virtual void move(int x, int y); 
     void attaqued(int strenght);
 
 private :
@@ -31,7 +31,7 @@ class blindMonster : public monster
 {
 public :
     blindMonster(int hp, int str, double pSkill, int x, int y);
-    void move();
+    void move(int x, int y) override;
 };
 
 #endif // MONSTER_H

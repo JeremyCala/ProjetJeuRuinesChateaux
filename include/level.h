@@ -30,6 +30,9 @@ public:
 
     /* Methods */
     void initLevel();
+
+    void moveAdventurer(int x, int y);
+    void moveMonsters();
 private:
     adventurer d_player;
     position d_exit;

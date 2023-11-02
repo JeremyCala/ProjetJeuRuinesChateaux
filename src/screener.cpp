@@ -36,6 +36,20 @@ void screener::showMonsters(const level &l) const
     }
 }
 
+void screener::showATH() const
+{
+    mvprintw(2,d_length + 4,"A");
+    mvprintw(2,d_length + 5,"Z");
+    mvprintw(2,d_length + 6,"E");
+    mvprintw(3,d_length + 4,"Q");
+    mvprintw(3,d_length + 5,"@");
+    mvprintw(3,d_length + 6,"D");
+    mvprintw(4,d_length + 4,"W");
+    mvprintw(4,d_length + 5,"S");
+    mvprintw(4,d_length + 6,"C");
+    
+}
+
 void screener::showLevel(const level &l) const
 {
     clear();
@@ -44,9 +58,16 @@ void screener::showLevel(const level &l) const
             mvprintw(i,j,"#");
     for(int i = 0;i < l.getNbRooms(); ++i)
         showRoom(l.getRoom(i));
+    showATH();
 
-    showPlayer(l.getPlayer());
     showMonsters(l);
+    showPlayer(l.getPlayer());
+    
+
+    move(l.getPlayer().getY(),l.getPlayer().getX());
     refresh();    
+    noecho();
 }
+
+
 

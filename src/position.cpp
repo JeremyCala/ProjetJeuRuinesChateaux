@@ -17,3 +17,9 @@ void position::set(int x, int y)
     d_x = x;
     d_y = y;
 }
+
+void position::moveFrom(int x, int y)
+{
+    d_x += x;
+    d_y += y;
+}

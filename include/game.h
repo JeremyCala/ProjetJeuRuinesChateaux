@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include"screener.h"
+#include"level.h"
 
 class game
 {
@@ -13,8 +14,11 @@ private:
     void gameLoop();
     void editLoop();
 
+    void playerInputGame();
+
     bool d_isRunning, d_menu, d_game, d_edit;
     screener d_screener;
+    level d_level;
 };
 
 #endif // GAME_H

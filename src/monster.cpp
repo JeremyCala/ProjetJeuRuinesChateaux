@@ -1,3 +1,7 @@
+#include <cmath>
+#include <random>
+#include <curses.h>
+#include <iostream>
 #include "position.h"
 #include "monster.h"
 
@@ -15,11 +19,36 @@ int monster::percentSkill() const  { return d_pSkill; }
 int monster::getX() const { return d_pos.getX(); }
 int monster::getY() const { return d_pos.getY(); }
 
-void monster::move(const position& adventurerPosition)
+void monster::move(int x, int y)
 {
     // se déplace d’une case (horizontal ou vertical) vers l’aventurier 
     // si celui-ci est à moins de huit cases
     // (ou reste sur l’aventurier s’il est en train de l’attaquer)
+
+    int dist = sqrt(pow(d_pos.getX() - x,2) + pow(d_pos.getY() - y,2));
+    if(dist > 8)
+    do
+    {
+        int r = (rand()%2 == 0) ? 1: -1;
+
+        if(rand()%2 == 0)
+        {
+            if(mvinch(d_pos.getY(),d_pos.getX()+ r) == '.')
+            {
+                d_pos.moveFrom(r,0);
+                break;
+            }
+        }
+        else
+        {
+            if(mvinch(d_pos.getY()+r, d_pos.getX()) == '.')
+            {
+                 d_pos.moveFrom(0,r);
+                 break;
+            }
+        }
+    }
+    while(true);
 }
 
 void monster::attaqued(int strenght)
@@ -31,7 +60,7 @@ void monster::attaqued(int strenght)
 blindMonster::blindMonster(int hp, int str, double pSkill, int x, int y) : 
                            monster{hp,str,pSkill,x,y} {}
 
-void blindMonster::move()
+void blindMonster::move(int x, int y)
 {
     //se déplace au hasard d’un case (horizontale, vertical ou diagonal)
 }
