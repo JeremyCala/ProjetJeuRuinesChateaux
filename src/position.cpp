@@ -18,8 +18,14 @@ void position::set(int x, int y)
     d_y = y;
 }
 
+void position::set(const position &p)
+{
+    d_x = p.getX();
+    d_y = p.getY();
+}
+
 void position::moveFrom(int x, int y)
 {
     d_x += x;
     d_y += y;
-}
+} 

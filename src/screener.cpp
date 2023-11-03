@@ -36,18 +36,37 @@ void screener::showMonsters(const level &l) const
     }
 }
 
-void screener::showATH() const
+void screener::showStats(const level &l) const
+{
+    mvprintw(10,d_length + 2,"Hp :"); 
+    mvprintw(10,d_length + 7, "%d", l.getPlayer().getHp());
+
+    mvprintw(12,d_length + 2,"Strength :");
+    mvprintw(12,d_length + 13, "%d", l.getPlayer().getStrength());
+
+    mvprintw(14,d_length + 2,"Purse :");
+    mvprintw(14,d_length + 10, "%d", l.getPlayer().getPurse());
+
+    mvprintw(16,d_length + 2,"Sword :");
+    mvprintw(16,d_length + 10, "%d", l.getPlayer().getSword());
+
+    mvprintw(18,d_length + 2,"Armor :");
+    mvprintw(18,d_length + 10, "%d", l.getPlayer().getArmor());
+}
+
+void screener::showATH(const level &l) const
 {
     mvprintw(2,d_length + 4,"A");
-    mvprintw(2,d_length + 5,"Z");
-    mvprintw(2,d_length + 6,"E");
-    mvprintw(3,d_length + 4,"Q");
-    mvprintw(3,d_length + 5,"@");
-    mvprintw(3,d_length + 6,"D");
-    mvprintw(4,d_length + 4,"W");
-    mvprintw(4,d_length + 5,"S");
-    mvprintw(4,d_length + 6,"C");
-    
+    mvprintw(2,d_length + 6,"Z");
+    mvprintw(2,d_length + 8,"E");
+    mvprintw(4,d_length + 4,"Q");
+    mvprintw(4,d_length + 6,"@");
+    mvprintw(4,d_length + 8,"D");
+    mvprintw(6,d_length + 4,"W");
+    mvprintw(6,d_length + 6,"X");
+    mvprintw(6,d_length + 8,"C");
+
+    showStats(l);
 }
 
 void screener::showLevel(const level &l) const
@@ -58,12 +77,11 @@ void screener::showLevel(const level &l) const
             mvprintw(i,j,"#");
     for(int i = 0;i < l.getNbRooms(); ++i)
         showRoom(l.getRoom(i));
-    showATH();
+    showATH(l);
 
     showMonsters(l);
     showPlayer(l.getPlayer());
     
-
     move(l.getPlayer().getY(),l.getPlayer().getX());
     refresh();    
     noecho();

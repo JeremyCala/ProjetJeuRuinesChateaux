@@ -81,7 +81,7 @@ void game::playerInputGame()
     case 'd':
         d_level.moveAdventurer(1,0);
         break;
-    case 's':
+    case 'x':
         d_level.moveAdventurer(0,1);
         break;
     case 'a':

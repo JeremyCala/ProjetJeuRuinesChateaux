@@ -16,7 +16,8 @@ public:
     void showPlayer(const adventurer &a) const;
     void showMonsters(const level& l) const;
     void showLevel(const level &l) const;
-    void showATH() const;
+    void showStats(const level &l) const;
+    void showATH(const level &l) const;
 private:
     int d_length, d_width;
 };

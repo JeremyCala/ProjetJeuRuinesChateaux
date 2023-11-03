@@ -11,7 +11,7 @@ public:
 
   /* Getters */
   int getHp() const;
-  int getStr() const;
+  int getStrength() const;
   int getPurse() const;
   int getSword() const;
   int getArmor() const;
@@ -23,7 +23,11 @@ public:
   void reparsword(int coin);
   void repararmor(int coin);
   void move(int x, int y);
-  void attaqued(int strenght);
+  void attacked(int strength);
+  int attack();
+  void kill(int strength);
+  void loseSword();
+
 private:
   int d_hp, d_str, d_sword, d_armor, d_purse = 0;
   bool d_amulet;
