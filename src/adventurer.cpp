@@ -47,7 +47,7 @@ void adventurer::attacked(int strength)
     d_hp -= (strength - damage);
 }
 
-int adventurer::attack() 
+int adventurer::attack() const
 {
   /*Renvoi la force d'attaque*/
   int r = rand()%10<8 ? 1 : 0; //proba de 80%

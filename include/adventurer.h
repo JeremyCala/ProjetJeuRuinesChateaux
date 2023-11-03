@@ -24,7 +24,7 @@ public:
   void repararmor(int coin);
   void move(int x, int y);
   void attacked(int strength);
-  int attack();
+  int attack() const;
   void kill(int strength);
   void loseSword();
 
