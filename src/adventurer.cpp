@@ -2,8 +2,8 @@
 #include "position.h"
 #include "adventurer.h"
 
-adventurer::adventurer(int hp, int str, int sword, int armor, bool amulet):
-d_hp{hp}, d_str{str}, d_sword{sword}, d_armor{armor}, d_amulet{amulet} {}
+adventurer::adventurer(int hp, int str, int sword, int armor):
+d_hp{hp}, d_str{str}, d_sword{sword}, d_armor{armor} {}
 
 int adventurer::getHp() const { return d_hp; }
 
@@ -17,8 +17,6 @@ int adventurer::getArmor() const { return d_armor; }
 
 int adventurer::getX() const { return d_pos.getX(); }
 int adventurer::getY() const { return d_pos.getY(); }
-
-bool adventurer::getAmulet() const { return d_amulet; }
 
 void adventurer::reparsword(int coin)
 {
@@ -40,11 +38,15 @@ void adventurer::move(int x, int y)
 void adventurer::attacked(int strength)
 {
   int damage = (3*strength)/4;
-  d_armor -= damage;
+  d_armor -= damage/2;
   if(d_armor < 0)
-    d_hp -= (d_armor + (strength-damage));
+  {
+    int remains = -d_armor;
+    d_hp -= (strength/4+remains);
+    d_armor = 0;
+  }
   else
-    d_hp -= (strength - damage);
+    d_hp -= (strength/4);
 }
 
 int adventurer::attack() const

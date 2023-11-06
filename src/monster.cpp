@@ -108,21 +108,31 @@ bool sightMonster::wallBetween(int x, int y) const
 
 position sightMonster::getNearestCell(int x, int y) const
 {
-    /* Trouve la case qui se rapproche le plus de la position cible
-    en utilisant l'algorithme de ligne de Bresenham */
+    /* Trouve la case verticale ou horizontale qui se rapproche le plus 
+    de la position cible en utilisant l'algorithme de ligne de Bresenham */
 
     int dx = abs(x - getX());
     int dy = abs(y - getY());
-    int sx = (getX() < x) ? 1 : -1;
-    int sy = (getY() < y) ? 1 : -1;
-    int err = 2*(dx - dy);
     int x1 = getX();
     int y1 = getY();
 
-    if (err > -dy) 
-        x1 += sx;
-    if (err < dx) 
-        y1 += sy;
+    if (dx > dy) {
+        if (getX() < x) {
+            if (mvinch(y1,x1+1) != '#')
+                x1++;
+        } else if (getX() > x) {
+            if (mvinch(y1,x1-1) != '#')
+                x1--;
+        }
+    } else {
+        if (getY() < y) {
+            if (mvinch(y1+1,x1) != '#')
+                y1++;
+        } else if (getY() > y) {
+            if (mvinch(y1-1,x1) != '#')
+                y1--;
+        }
+    }
     return {x1,y1};
 }
 

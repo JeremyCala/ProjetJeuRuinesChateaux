@@ -26,17 +26,19 @@ public:
     int getNbMonsters() const;
     const std::unique_ptr<monster>& getMonster(int n) const;
     position getposAmulet() const;
+    bool getAmulet() const;
     position getposExit() const;
 
     /* Methods */
     void initLevel();
-
     void moveAdventurer(int x, int y);
+    void monsterPlayerFight(tabMonster::iterator& monsterIterator);
     void moveMonsters();
 private:
     adventurer d_player;
     position d_exit;
-    position d_amulet;
+    position d_posAmulet;
+    bool d_amulet;
     tabMonster d_monsters;
     tabRoom d_rooms;
 

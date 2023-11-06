@@ -7,7 +7,7 @@ class adventurer
 {
 public:
   /* Constructor */
-  adventurer(int hp, int str, int sword, int armor, bool amulet);
+  adventurer(int hp, int str, int sword, int armor);
 
   /* Getters */
   int getHp() const;
@@ -17,7 +17,6 @@ public:
   int getArmor() const;
   int getX() const;
   int getY() const;
-  bool getAmulet() const;
 
   /* Methods */
   void reparsword(int coin);
@@ -30,7 +29,6 @@ public:
 
 private:
   int d_hp, d_str, d_sword, d_armor, d_purse = 0;
-  bool d_amulet;
   position d_pos;
 };
 
