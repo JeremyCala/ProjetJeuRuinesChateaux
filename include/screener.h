@@ -4,6 +4,7 @@
 class room;
 class adventurer;
 class level;
+class monster;
 
 class screener
 {
@@ -18,6 +19,7 @@ public:
     void showLevel(const level &l) const;
     void showStats(const level &l) const;
     void showATH(const level &l) const;
+    void showMonsterStats(const monster &m) const;
 private:
     int d_length, d_width;
 };

@@ -1,6 +1,7 @@
 #include<curses.h>
 #include"level.h"
 #include"screener.h"
+#include"monster.h"
 
 screener::screener(): d_length{0}, d_width{0} {}
 
@@ -38,6 +39,8 @@ void screener::showMonsters(const level &l) const
 
 void screener::showStats(const level &l) const
 {
+    mvprintw(8,d_length + 1,"STATS AVENTURIER :"); 
+
     mvprintw(10,d_length + 2,"Hp :"); 
     mvprintw(10,d_length + 7, "%d", l.getPlayer().getHp());
 
@@ -69,6 +72,20 @@ void screener::showATH(const level &l) const
     showStats(l);
 }
 
+void screener::showMonsterStats(const monster &m) const
+{
+    mvprintw(21,d_length + 1,"STATS MONSTRE :");
+
+    mvprintw(23,d_length + 2,"Hp :");
+    mvprintw(23,d_length + 7, "%d", m.getHp());
+
+    mvprintw(25,d_length + 2,"Strength :");
+    mvprintw(25,d_length + 13, "%d", m.getStrength());   
+
+    int habilete = (m.getPercentSkill()*100);
+    mvprintw(27,d_length + 2,"Habilete :  %.0f%%", m.getPercentSkill()*100);
+}
+
 void screener::showLevel(const level &l) const
 {
     clear();
@@ -78,6 +95,10 @@ void screener::showLevel(const level &l) const
     for(int i = 0;i < l.getNbRooms(); ++i)
         showRoom(l.getRoom(i));
     showATH(l);
+    
+    std::unique_ptr<monster> closestMonster = l.getClosestMonster();
+    if (closestMonster) //si un monstre est proche
+        showMonsterStats(*closestMonster);
 
     showMonsters(l);
     showPlayer(l.getPlayer());

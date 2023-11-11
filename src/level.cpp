@@ -1,5 +1,6 @@
 #include<iostream>
 #include<curses.h>
+#include<cmath>
 #include"level.h"
 
 level::level():  d_player{100,10,10,20}, d_amulet{false} {}
@@ -74,11 +75,19 @@ void level::moveAdventurer(int x, int y)
         if (d_amulet == true)
             std::cout<<"waf";
         break;
-
     
     default:
         break;
     }
+}
+
+void level::updateMonsterPosition(const position &oldPos, const position &newPos)
+{
+    /* Actualise la position du monstre pour éviter les collisions */
+    mvprintw(oldPos.getY(), oldPos.getX(),".");
+    mvprintw(newPos.getY(), newPos.getX(),"M");
+    refresh();    
+    noecho();
 }
 
 void level::monsterPlayerFight(tabMonster::iterator& m) 
@@ -109,7 +118,32 @@ void level::moveMonsters()
 
     for(auto monsterIterator = d_monsters.begin(); monsterIterator != d_monsters.end();)
     {
+        position old = (*monsterIterator)->getPos();
         (*monsterIterator)->move(d_player.getX(),d_player.getY());
+        updateMonsterPosition(old,(*monsterIterator)->getPos());
         monsterPlayerFight(monsterIterator);
     }
 }
+
+std::unique_ptr<monster> level::getClosestMonster() const
+{
+    /* Retourne le monstre à au plus d'une case du player */
+
+    int distmin = 2;
+    int indmin = -1;
+    for (int i=0; i<getNbMonsters(); ++i)
+    {
+        int dist = sqrt(pow(d_monsters[i]->getX() - d_player.getX(),2) 
+                 + pow(d_monsters[i]->getY() - d_player.getY(),2)); //distance entre monstre et player
+        if (dist<distmin)
+        {
+            distmin = dist;
+            indmin = i;
+        }
+    }
+    if (distmin<=1)
+        return std::make_unique<monster>(*d_monsters[indmin]);
+    else
+        return nullptr;
+}
+

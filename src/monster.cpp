@@ -14,10 +14,11 @@ int monster::getHp() const  { return d_hp; }
 
 int monster::getStrength() const  { return d_str; }
 
-int monster::getPercentSkill() const  { return d_pSkill; }
+double monster::getPercentSkill() const  { return d_pSkill; }
 
 int monster::getX() const { return d_pos.getX(); }
 int monster::getY() const { return d_pos.getY(); }
+position monster::getPos() const { return d_pos; }
 
 bool monster::alive() const { return d_hp>0; }
 
@@ -29,16 +30,6 @@ void monster::moveFrom(int x, int y)
 void monster::set(const position &p)
 {
     d_pos.set(p);
-}
-
-void monster::updatePosition(const position &oldPos, const position &newPos)
-{
-    /* Actualise la position du monstre */
-    mvprintw(oldPos.getY(), oldPos.getX(),".");
-    mvprintw(newPos.getY(), newPos.getX(),"M");
-    set(newPos);
-    refresh();    
-    noecho();
 }
 
 void monster::move(int x, int y)
@@ -155,7 +146,7 @@ void sightMonster::move(int x, int y)
             {
                 if(mvinch(getY(),getX()+ r) == '.')
                 {
-                    updatePosition({getX(),getY()},{getX()+r,getY()});
+                    set({getX()+r,getY()});
                     break;
                 }
             }
@@ -163,7 +154,7 @@ void sightMonster::move(int x, int y)
             {
                 if(mvinch(getY()+r,getX()) == '.')
                 {
-                    updatePosition({getX(),getY()},{getX(),getY()+r});
+                    set({getX(),getY()+r});
                     break;
                 }
             }
@@ -173,7 +164,7 @@ void sightMonster::move(int x, int y)
         {
             position newCell {getNearestCell(x,y)}; //case la plus proche en direction du player
             if(mvinch(newCell.getY(),newCell.getX()) == '.')
-                updatePosition({getX(),getY()},newCell); //Se déplace en direction du player
+                set(newCell); // se déplace en direction du player
         }
     }
 }

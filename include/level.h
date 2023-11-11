@@ -32,8 +32,11 @@ public:
     /* Methods */
     void initLevel();
     void moveAdventurer(int x, int y);
+    void updateMonsterPosition(const position &oldPos, const position &newPos);
     void monsterPlayerFight(tabMonster::iterator& monsterIterator);
     void moveMonsters();
+    std::unique_ptr<monster> getClosestMonster() const;
+
 private:
     adventurer d_player;
     position d_exit;

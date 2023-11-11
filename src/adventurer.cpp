@@ -65,5 +65,6 @@ void adventurer::kill(int strength)
 
 void adventurer::loseSword()
 {
-  d_str--;
+  if (d_sword>0)
+    d_sword--;
 }

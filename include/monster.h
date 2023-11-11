@@ -14,15 +14,15 @@ public :
     /*Getter*/
     int getHp() const;
     int getStrength() const;
-    int getPercentSkill() const;
+    double getPercentSkill() const;
     int getX() const;
     int getY() const;
+    position getPos() const;
 
     /*Methods*/
     bool alive() const;
     void moveFrom(int x, int y);
     void set(const position &p);
-    void updatePosition(const position &oldPos, const position &newPos);
     virtual void move(int x, int y); 
     void attacked(int strength);
     int attack() const;
