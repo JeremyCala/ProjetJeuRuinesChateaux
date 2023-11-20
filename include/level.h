@@ -12,6 +12,7 @@
 
 using tabMonster = std::vector<std::unique_ptr<monster>>;
 using tabRoom = std::vector<room>;
+using std::string;
 
 class level
 {
@@ -30,12 +31,14 @@ public:
     position getposExit() const;
 
     /* Methods */
-    void initLevel();
+    void initLevel(const string &fileName);
     void moveAdventurer(int x, int y);
     void updateMonsterPosition(const position &oldPos, const position &newPos);
     void monsterPlayerFight(tabMonster::iterator& monsterIterator);
     void moveMonsters();
     std::unique_ptr<monster> getClosestMonster() const;
+    bool gameOver() const;
+    void clear();
 
 private:
     adventurer d_player;

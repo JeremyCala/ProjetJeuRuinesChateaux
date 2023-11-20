@@ -7,6 +7,7 @@ class adventurer
 {
 public:
   /* Constructor */
+  adventurer();
   adventurer(int hp, int str, int sword, int armor);
 
   /* Getters */
@@ -22,6 +23,7 @@ public:
   void reparsword(int coin);
   void repararmor(int coin);
   void move(int x, int y);
+  void setPos(int x, int y);
   void attacked(int strength);
   int attack() const;
   void kill(int strength);

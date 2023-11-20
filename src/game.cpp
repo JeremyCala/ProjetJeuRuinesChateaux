@@ -48,7 +48,7 @@ void game::menuLoop()
 
 void game::gameLoop()
 {
-    d_level.initLevel();
+    d_level.initLevel("1.txt");
     
     while(d_game)
     {
@@ -100,6 +100,7 @@ void game::playerInputGame()
     case '3':
         d_game = false;
         d_menu= true;
+        d_level.clear();
         break;
 
     default:

@@ -5,6 +5,9 @@
 adventurer::adventurer(int hp, int str, int sword, int armor):
 d_hp{hp}, d_str{str}, d_sword{sword}, d_armor{armor} {}
 
+adventurer::adventurer():
+d_hp{0}, d_str{0}, d_sword{0}, d_armor{0} {}
+
 int adventurer::getHp() const { return d_hp; }
 
 int adventurer::getStrength() const { return d_str; }
@@ -35,6 +38,11 @@ void adventurer::move(int x, int y)
   d_pos.moveFrom(x, y);
 }
 
+void adventurer::setPos(int x, int y)
+{
+  d_pos.set(x, y);
+}
+
 void adventurer::attacked(int strength)
 {
   int damage = (3*strength)/4;
@@ -47,6 +55,7 @@ void adventurer::attacked(int strength)
   }
   else
     d_hp -= (strength/4);
+  if (d_hp<0) d_hp=0;
 }
 
 int adventurer::attack() const

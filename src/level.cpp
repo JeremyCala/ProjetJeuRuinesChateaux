@@ -1,18 +1,64 @@
 #include<iostream>
+#include<fstream>
+#include<sstream>
 #include<curses.h>
 #include<cmath>
 #include"level.h"
 
-level::level():  d_player{100,10,10,20}, d_amulet{false} {}
+level::level(): d_amulet{false} {}
 
-void level::initLevel()
+void level::initLevel(const string &fileName)
 {
-    d_rooms.push_back(room{10,5,40,20});
-    d_player.move(d_rooms[0].getX(), d_rooms[0].getY()); //place le joueur en haut à gauche de la 1ère room
-    d_monsters.push_back(std::make_unique<sightMonster>(50,10,0.9,d_rooms[0].getX()+3,d_rooms[0].getY()+3));
-    d_monsters.push_back(std::make_unique<sightMonster>(50,10,0.9,d_rooms[0].getX()+2,d_rooms[0].getY()+3));
-    d_monsters.push_back(std::make_unique<monster>(20,10,0.9,d_rooms[0].getX()+1,d_rooms[0].getY()+5));
-    //d_monsters.push_back(std::make_unique<monster>(10,10,0.9,d_rooms[0].getX()+20,d_rooms[0].getY()+10));
+    std::ifstream file("level/"+fileName);
+    char type;
+    int x, y, length, width;
+
+    if (file.is_open()) {
+
+        std::string ligne;
+
+        while (std::getline(file, ligne)) {
+            std::istringstream iss(ligne);
+            char type;
+            iss >> type;
+
+            switch (type) {
+                case 'R': { // Si la ligne correspond à une salle
+                    iss >> x >> y >> length >> width;
+                    d_rooms.push_back(room{x,y,length,width});
+                    break;
+                }
+                case 'A': { // Si la ligne correspond à l'aventurier
+                    int x, y;
+                    iss >> x >> y;
+                    d_player.setPos(x, y);
+                    break;
+                }
+                case 'S': { // Si la ligne correspond à un monstre voyant
+                    int x, y;
+                    iss >> x >> y;
+                    d_monsters.push_back(std::make_unique<sightMonster>(50,10,0.9,x,y));
+                    break;
+                }
+                case 'M': { // Si la ligne correspond à un monstre aveugle
+                    int x, y;
+                    iss >> x >> y;
+                    d_monsters.push_back(std::make_unique<monster>(20,10,0.9,x,y));
+                    break;
+                }
+                default:
+                    std::cerr << "Type de ligne non reconnu : " << type << std::endl;
+                    break;
+            }
+        }
+        
+        file.close();
+    } else {
+        std::cerr << "Impossible d'ouvrir le fichier." << std::endl;
+    }
+
+    d_amulet = false;
+
 }
 
 adventurer level::getPlayer() const
@@ -145,5 +191,17 @@ std::unique_ptr<monster> level::getClosestMonster() const
         return std::make_unique<monster>(*d_monsters[indmin]);
     else
         return nullptr;
+}
+
+bool level::gameOver() const
+{
+    return d_player.getHp()==0;
+}
+
+void level::clear()
+{
+    /*Reinitialise le level en vidant les rooms et les monstres*/
+    d_monsters.clear();
+    d_rooms.clear();
 }
 
