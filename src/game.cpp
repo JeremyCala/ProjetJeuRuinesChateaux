@@ -2,12 +2,19 @@
 #include <curses.h>
 #include <random>
 #include <ctime>
+#include <filesystem>
 #include"level.h"
 #include"game.h"
 #include"levelEditor.h"
 
 game::game(): d_isRunning{true}, d_menu{true}, d_game{false}, d_edit{false}, d_createLevel{false}, d_end{false},
-              d_gameOver{false}, d_screener{100,30}, d_num_level{1}, d_nb_level{2} {}
+              d_gameOver{false}, d_editLevel{false}, d_screener{100,30}, d_num_level{1}, d_nb_level{0}
+{
+    /* On compte le nombre de niveau dans le fichier level */
+    
+    for (const auto& entry : std::filesystem::directory_iterator("level")) 
+        if (std::filesystem::is_regular_file(entry.path())) d_nb_level++;
+}
 
 void game::mainLoop()
 {
@@ -19,6 +26,7 @@ void game::mainLoop()
         else if(d_game) gameLoop();
         else if(d_edit) editLoop();
         else if(d_createLevel) createLevelLoop();
+        else if(d_editLevel) editLevelLoop();
         else if (d_save) saveLoop();
         else if(d_end) endLoop();
         else if(d_gameOver) gameOverLoop();
@@ -90,7 +98,8 @@ void game::editLoop()
             d_createLevel = true;
             break;
         case '2':
-            d_edit = true;
+            d_editLevel = true;
+            d_edit = false;
             break;
         case '3':
             d_menu = true;
@@ -114,6 +123,41 @@ void game::createLevelLoop()
     else
         d_edit = true;
     d_createLevel = false;
+}
+
+void game::editLevelLoop()
+{
+    while(d_editLevel)
+    {
+        d_screener.showEditLevel(d_nb_level);
+        char choice = getch();
+
+        if(choice == 27)
+        {
+            d_editLevel = false;
+            d_edit = true;
+        }
+        else if(choice -'0' > 0 && choice - '0' <= d_nb_level)
+        {
+            editLevelLoop(choice-'0');
+        }
+        
+    }
+}
+
+void game::editLevelLoop(int numLevel)
+{
+
+    levelEditor newLevel{};
+    
+    if (newLevel.editLevel(d_screener, numLevel)) //si le niveau a été créer correctement
+    {
+        d_save = true; //on affiche le message de sauvegarde
+    }
+    else
+        d_edit = true;
+    d_editLevel = false;
+
 }
 
 void game::saveLoop()

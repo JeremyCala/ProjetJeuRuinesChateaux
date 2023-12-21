@@ -80,6 +80,39 @@ void screener::showEditMenu() const
     refresh();
 }
 
+void screener::showEditLevel(int nbLevel) const
+{
+    clear();
+    mvprintw(0,0,"EDITER UN NIVEAU EXISTANT\n\n(echap) Retour");
+
+    int i{1};
+    for(i; i <= nbLevel; ++i)
+        mvprintw(i+3,0,"%d. Niveau %d", i, i);
+
+    mvprintw(i+6,0,"Votre choix : ");
+    refresh();
+}
+
+void screener::showEditLevel(const level &l) const
+{
+    clear();
+    for(int i = 0; i < d_width; ++i)
+        for(int j = 0; j < d_length; ++j)
+            mvprintw(i,j,"#");
+    for(int i = 0;i < l.getNbRooms(); ++i)
+        showRoom(l.getRoom(i));
+
+
+    showMonsters(l);
+    showAmulet(l);
+    showExit(l);
+    showPlayer(l.getPlayer());
+    
+    move(l.getPlayer().getY(),l.getPlayer().getX());
+    refresh();    
+    noecho();
+}
+
 void screener::showCreateLevel() const
 {
     mvprintw(1,d_length + 1,"CREER UN NIVEAU");
@@ -229,16 +262,17 @@ void screener::showLevel(const level &l) const
             mvprintw(i,j,"#");
     for(int i = 0;i < l.getNbRooms(); ++i)
         showRoom(l.getRoom(i));
-    showATH(l);
-    
-    std::unique_ptr<monster> closestMonster = l.getClosestMonster();
-    if (closestMonster) //si un monstre est proche
-        showMonsterStats(*closestMonster);
+
 
     showMonsters(l);
     showAmulet(l);
+    showATH(l);
     showExit(l);
     showPlayer(l.getPlayer());
+
+    std::unique_ptr<monster> closestMonster = l.getClosestMonster();
+    if (closestMonster) //si un monstre est proche
+        showMonsterStats(*closestMonster);
     
     move(l.getPlayer().getY(),l.getPlayer().getX());
     refresh();    

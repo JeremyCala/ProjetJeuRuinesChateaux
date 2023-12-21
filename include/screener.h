@@ -27,6 +27,8 @@ public:
     void showEnd(int nbLevel) const;
     void showGameOver() const;
     void showEditMenu() const;
+    void showEditLevel(int nbLevel) const;
+    void showEditLevel(const level &l) const;
     void showCreateLevel() const;
     void initCreateLevel() const;
     void showSaveError() const;
