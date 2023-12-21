@@ -29,6 +29,8 @@ public:
     position getposAmulet() const;
     bool getAmulet() const;
     position getposExit() const;
+    bool endLevel() const;
+    bool gameOver() const;
 
     /* Methods */
     void initLevel(const string &fileName);
@@ -37,7 +39,6 @@ public:
     void monsterPlayerFight(tabMonster::iterator& monsterIterator);
     void moveMonsters();
     std::unique_ptr<monster> getClosestMonster() const;
-    bool gameOver() const;
     void clear();
 
 private:
@@ -47,7 +48,7 @@ private:
     bool d_amulet;
     tabMonster d_monsters;
     tabRoom d_rooms;
-
+    bool d_endLevel;
 };
 
 #endif // LEVEL_H

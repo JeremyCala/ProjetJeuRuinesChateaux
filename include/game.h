@@ -13,12 +13,17 @@ private:
     void menuLoop();
     void gameLoop();
     void editLoop();
-
+    void createLevelLoop();
+    void saveLoop();
+    void endLoop();
+    void gameOverLoop();
     void playerInputGame();
 
-    bool d_isRunning, d_menu, d_game, d_edit;
+    bool d_isRunning, d_menu, d_game, d_edit, d_end, d_gameOver, d_save, d_createLevel;
     screener d_screener;
     level d_level;
+    int d_num_level;
+    int d_nb_level;
 };
 
 #endif // GAME_H

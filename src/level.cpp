@@ -13,6 +13,8 @@ void level::initLevel(const string &fileName)
     char type;
     int x, y, length, width;
 
+    d_player = adventurer{20,10,10,10};
+
     if (file.is_open()) {
 
         std::string ligne;
@@ -28,7 +30,7 @@ void level::initLevel(const string &fileName)
                     d_rooms.push_back(room{x,y,length,width});
                     break;
                 }
-                case 'A': { // Si la ligne correspond à l'aventurier
+                case '@': { // Si la ligne correspond à l'aventurier
                     int x, y;
                     iss >> x >> y;
                     d_player.setPos(x, y);
@@ -46,6 +48,19 @@ void level::initLevel(const string &fileName)
                     d_monsters.push_back(std::make_unique<monster>(20,10,0.9,x,y));
                     break;
                 }
+                case 'A': { // Si la ligne correspond à l'amulette
+                    int x, y;
+                    iss >> x >> y;
+                    d_posAmulet = position{x,y};
+                    d_amulet = false;
+                    break;
+                }
+                case 'E': { // Si la ligne correspond à la sortie
+                    int x, y;
+                    iss >> x >> y;
+                    d_exit = position{x,y};
+                    break;
+                }
                 default:
                     std::cerr << "Type de ligne non reconnu : " << type << std::endl;
                     break;
@@ -58,7 +73,7 @@ void level::initLevel(const string &fileName)
     }
 
     d_amulet = false;
-
+    d_endLevel = false;
 }
 
 adventurer level::getPlayer() const
@@ -101,6 +116,15 @@ position level::getposExit() const
     return d_exit;
 }
 
+bool level::endLevel() const
+{
+    return d_endLevel;
+}
+
+bool level::gameOver() const
+{
+    return d_player.getHp()==0;
+}
 
 void level::moveAdventurer(int x, int y)
 {
@@ -116,10 +140,14 @@ void level::moveAdventurer(int x, int y)
         d_player.move(x,y);
         break;
 
-    case 'O':
+    case 'E':
         d_player.move(x,y);
         if (d_amulet == true)
-            std::cout<<"waf";
+        {
+            d_endLevel = true;
+            clear();
+        }
+            
         break;
     
     default:
@@ -193,10 +221,7 @@ std::unique_ptr<monster> level::getClosestMonster() const
         return nullptr;
 }
 
-bool level::gameOver() const
-{
-    return d_player.getHp()==0;
-}
+
 
 void level::clear()
 {
