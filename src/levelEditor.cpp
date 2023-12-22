@@ -9,7 +9,7 @@ bool levelEditor::createLevel(const screener &S, int numLevel) const
 {
     /* Créer un nouveau niveau */
 
-    S.initCreateLevel();
+    S.initCreateLevel();      //initialise en remplissant l'écran de murs
     return editMod(S, numLevel);
 }
 
@@ -40,8 +40,10 @@ bool levelEditor::isvalidLevel(const screener &S) const
                     break;
             }
         }
-
-    return true;
+    if (adventurerCpt>0 && amuletCpt>0 && exitCpt>0)    //si il y a au moins un @, A et E
+        return true;
+    else
+        return false;
 }
 
 void levelEditor::saveLevel(int numLevel, const screener &S) const
@@ -84,14 +86,18 @@ void levelEditor::saveLevel(int numLevel, const screener &S) const
 
 bool levelEditor::editLevel(const screener &S, int numLevel) const
 {
+    /* Edite un niveau existant */
+    
     level levelToEdit;
-    levelToEdit.initLevel(std::to_string(numLevel) +".txt");
-    S.showEditLevel(levelToEdit);
-    return editMod(S, numLevel);
+    levelToEdit.initLevel(std::to_string(numLevel) +".txt"); //charge le niveau
+    S.showEditLevel(levelToEdit); //affiche le niveau
+    return editMod(S, numLevel); //édite
 }
 
 bool levelEditor::editMod(const screener &S, int numLevel) const
 {
+    /* Mode édition de niveau, renvoi true si il a bien été sauvegardé */
+
     bool validLevel = false; //le niveau n'est pas valide
 
     S.showCreateLevel();

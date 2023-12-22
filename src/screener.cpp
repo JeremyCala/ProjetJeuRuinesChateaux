@@ -148,7 +148,8 @@ void screener::initCreateLevel() const
 void screener::showSaveError() const
 {
     mvprintw(25,d_length + 1,"Erreur sauvegarde :");
-    mvprintw(26,d_length + 1,"plusieurs @, A ou E");
+    mvprintw(26,d_length + 1,"plusieurs ou aucun");
+    mvprintw(27,d_length + 1,"@, A ou E");
     refresh();
 }
 

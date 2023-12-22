@@ -10,7 +10,7 @@
 game::game(): d_isRunning{true}, d_menu{true}, d_game{false}, d_edit{false}, d_createLevel{false}, d_end{false},
               d_gameOver{false}, d_editLevel{false}, d_screener{100,30}, d_num_level{1}, d_nb_level{0}
 {
-    /* On compte le nombre de niveau dans le fichier level */
+    /* On compte le nombre de niveau dans le fichier level pour initialiser le nombre de niveaux */
     
     for (const auto& entry : std::filesystem::directory_iterator("level")) 
         if (std::filesystem::is_regular_file(entry.path())) d_nb_level++;
@@ -62,6 +62,8 @@ void game::menuLoop()
 
 void game::gameLoop()
 {
+    /* Boucle du jeu */
+
     d_level.initLevel(std::to_string(d_num_level)+".txt");
     
     while(d_game && !d_level.endLevel() &&!d_level.gameOver()) //tant que le niveau n'est pas terminé
@@ -71,22 +73,27 @@ void game::gameLoop()
         d_level.moveMonsters();
     }
 
-    if (!d_level.gameOver()) //savoir pourquoi le niveau s'est terminé
+    if (d_level.endLevel()) //si le niveau a été réussi
         if (++d_num_level>d_nb_level) //passe au niveau suivant ou revient au 1er niveau
         {
             d_num_level=1; 
-            d_end = true;
+            d_end = true;    //fin du jeu
         }
         else
             d_menu = true;   
-    else
+    else if(d_level.gameOver()) //si le niveau a échoué
+    {
         d_gameOver = true;
-        
+        d_num_level = 1;   //revient au 1er niveau
+    }
+    
     d_game = false;
 }
 
 void game::editLoop()
 {
+    /* Menu édition */
+
     while(d_edit)
     {
         d_screener.showEditMenu();
@@ -113,6 +120,8 @@ void game::editLoop()
 
 void game::createLevelLoop()
 {
+    /* Création d'un nouveau niveau */
+
     levelEditor newLevel{};
     
     if (newLevel.createLevel(d_screener, d_nb_level+1)) //si le niveau a été créer correctement
@@ -127,6 +136,8 @@ void game::createLevelLoop()
 
 void game::editLevelLoop()
 {
+    /* Menu de choix du niveau à éditer */
+
     while(d_editLevel)
     {
         d_screener.showEditLevel(d_nb_level);
@@ -147,26 +158,25 @@ void game::editLevelLoop()
 
 void game::editLevelLoop(int numLevel)
 {
+    /* Edition du niveau numLevel */
 
     levelEditor newLevel{};
     
     if (newLevel.editLevel(d_screener, numLevel)) //si le niveau a été créer correctement
-    {
         d_save = true; //on affiche le message de sauvegarde
-    }
     else
         d_edit = true;
     d_editLevel = false;
-
 }
 
 void game::saveLoop()
 {
+    /* Menu de sauvegarde */
     while(d_save)
     {
         d_screener.showSaveSuccess(d_nb_level);
         char choice = getch();
-        if (choice == '\n')
+        if (choice == '\n') //retour menu
         {
             d_edit = true;
             d_save = false;
@@ -177,11 +187,13 @@ void game::saveLoop()
 
 void game::endLoop()
 {
+    /* Menu de fin */
+
     while(d_end)
     {
         d_screener.showEnd(d_nb_level);
         char choice = getch();
-        if (choice == '\n')
+        if (choice == '\n') //retour menu
         {
             d_menu = true;
             d_end = false;
@@ -192,11 +204,13 @@ void game::endLoop()
 
 void game::gameOverLoop()
 {
+    /* Menu game over */
+
     while(d_gameOver)
     {
         d_screener.showGameOver();
         char choice = getch();
-        if (choice == '\n')
+        if (choice == '\n') //retour menu
         {
             d_menu = true;
             d_gameOver = false;
@@ -207,6 +221,8 @@ void game::gameOverLoop()
 
 void game::playerInputGame()
 {
+    /* Mouvements du joueur */
+
     char choice = getch();
     switch(choice)
     {
@@ -237,7 +253,7 @@ void game::playerInputGame()
 
     case 27:
         d_game = false;
-        d_menu= true;
+        d_menu = true;
         d_level.clear();
         break;
 
