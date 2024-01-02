@@ -49,16 +49,21 @@ void adventurer::attacked(int strength)
   d_armor -= damage/2;
   if(d_armor < 0)
   {
-    int remains = -d_armor;
-    d_hp -= (strength/4+remains);
-    d_armor = 0;
+    d_armor += d_purse; //récupère ses points grâce à la bourse
+    d_purse = 0;
+    if (d_armor < 0)  // si ça ne suffit pas
+    {
+      int remains = -d_armor;
+      d_hp -= (strength/4+remains);
+      d_armor = 0;
+    }
   }
   else
     d_hp -= (strength/4);
   if (d_hp<0) d_hp=0;
 }
 
-int adventurer::attack() const
+int adventurer::attack()
 {
   /*Renvoi la force d'attaque*/
   int r = rand()%10<8 ? 1 : 0; //proba de 80%
@@ -74,6 +79,14 @@ void adventurer::kill(int strength)
 
 void adventurer::loseSword()
 {
+  /* L'aventurier utilise son épée */
   if (d_sword>0)
     d_sword--;
+  else
+    d_sword += d_purse; // répare l'épée
+}
+
+void adventurer::increasePurse(int coins)
+{
+  d_purse += coins;
 }

@@ -127,13 +127,14 @@ void screener::showCreateLevel() const
     mvprintw(12,d_length + 1,". : sol");
     mvprintw(13,d_length + 1,"# : mur");
     mvprintw(14,d_length + 1,"A : amulette");
-    mvprintw(15,d_length + 1,"E : sortie");
-    mvprintw(16,d_length + 1,"(Note : pour @ et #");
-    mvprintw(17,d_length + 1,"utiliser ALTGR)");
-    mvprintw(19,d_length + 1,"Sauvegarder niveau:");
-    mvprintw(20,d_length + 4,"Entree");
-    mvprintw(22,d_length + 1,"Retour menu :");
-    mvprintw(23,d_length + 5,"Echap");
+    mvprintw(15,d_length + 1,"$ : tas de pieces");
+    mvprintw(16,d_length + 1,"E : sortie");
+    mvprintw(17,d_length + 1,"(Note : pour @ et #");
+    mvprintw(18,d_length + 1,"utiliser ALTGR)");
+    mvprintw(20,d_length + 1,"Sauvegarder niveau:");
+    mvprintw(21,d_length + 4,"Entree");
+    mvprintw(23,d_length + 1,"Retour menu :");
+    mvprintw(24,d_length + 5,"Echap");
     refresh();
 }
 
@@ -269,6 +270,7 @@ void screener::showLevel(const level &l) const
     showAmulet(l);
     showATH(l);
     showExit(l);
+    showCoins(l);
     showPlayer(l.getPlayer());
 
     std::unique_ptr<monster> closestMonster = l.getClosestMonster();
@@ -278,6 +280,12 @@ void screener::showLevel(const level &l) const
     move(l.getPlayer().getY(),l.getPlayer().getX());
     refresh();    
     noecho();
+}
+
+void screener::showCoins(const level &l) const
+{
+    for (int i=0; i<l.coinsPileNumber(); ++i)
+        mvprintw(l.coinsPile(i).getY(),l.coinsPile(i).getX(),"$");
 }
 
 

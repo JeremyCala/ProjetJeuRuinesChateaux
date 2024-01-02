@@ -172,6 +172,10 @@ bool levelEditor::editMod(const screener &S, int numLevel) const
                     if (x<S.length()-1)
                         S.print(x,y,"E");
                     break;
+                case '$':
+                    if (x<S.length()-1)
+                        S.print(x,y,"$");
+                    break;
             }
         }
     }

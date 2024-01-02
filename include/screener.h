@@ -44,6 +44,7 @@ public:
     void showStats(const level &l) const;
     void showATH(const level &l) const;
     void showMonsterStats(const monster &m) const;
+    void showCoins(const level &l) const;
 private:
     int d_length, d_width;
 };

@@ -9,9 +9,10 @@ level::level(): d_amulet{false} {}
 
 void level::initLevel(const string &fileName)
 {
+    /* Initialise le niveau n°fileName */
+
     std::ifstream file("level/"+fileName);
     char type;
-    int x, y, length, width;
 
     d_player = adventurer{20,10,10,10};
 
@@ -23,42 +24,43 @@ void level::initLevel(const string &fileName)
             std::istringstream iss(ligne);
             char type;
             iss >> type;
-
+            int x, y;
             switch (type) {
                 case 'R': { // Si la ligne correspond à une salle
+                    int length, width;
                     iss >> x >> y >> length >> width;
                     d_rooms.push_back(room{x,y,length,width});
                     break;
                 }
                 case '@': { // Si la ligne correspond à l'aventurier
-                    int x, y;
                     iss >> x >> y;
                     d_player.setPos(x, y);
                     break;
                 }
                 case 'S': { // Si la ligne correspond à un monstre voyant
-                    int x, y;
                     iss >> x >> y;
                     d_monsters.push_back(std::make_unique<sightMonster>(50,10,0.9,x,y));
                     break;
                 }
                 case 'M': { // Si la ligne correspond à un monstre aveugle
-                    int x, y;
                     iss >> x >> y;
                     d_monsters.push_back(std::make_unique<monster>(20,10,0.9,x,y));
                     break;
                 }
                 case 'A': { // Si la ligne correspond à l'amulette
-                    int x, y;
                     iss >> x >> y;
                     d_posAmulet = position{x,y};
                     d_amulet = false;
                     break;
                 }
                 case 'E': { // Si la ligne correspond à la sortie
-                    int x, y;
                     iss >> x >> y;
                     d_exit = position{x,y};
+                    break;
+                }
+                case '$': { // Si la ligne correspond à un tas de pièce
+                    iss >> x >> y;
+                    d_coins.push_back(position{x,y});
                     break;
                 }
                 default:
@@ -99,6 +101,16 @@ int level::getNbMonsters() const
 const std::unique_ptr<monster>& level::getMonster(int n) const
 {
     return d_monsters[n];
+}
+
+int level::coinsPileNumber() const
+{
+    return d_coins.size();
+}
+
+position level::coinsPile(int n) const
+{
+    return d_coins[n];
 }
 
 position level::getposAmulet() const 
@@ -147,7 +159,11 @@ void level::moveAdventurer(int x, int y)
             d_endLevel = true;
             clear();
         }
-            
+        break;
+    case '$':
+        d_player.move(x,y);
+        d_player.increasePurse(10);
+        removeCoins(d_player.getX(), d_player.getY());
         break;
     
     default:
@@ -172,7 +188,7 @@ void level::monsterPlayerFight(tabMonster::iterator& m)
     {
         d_player.attacked((*m)->attack());
         (*m)->attacked(d_player.attack());
-        d_player.loseSword();
+        d_player.loseSword(); // perd un point de solidité d'épée
 
         if (!(*m)->alive()) 
         {
@@ -221,7 +237,17 @@ std::unique_ptr<monster> level::getClosestMonster() const
         return nullptr;
 }
 
+void level::removeCoins(int x, int y)
+{
+    /* Supprime le tas de pièce à la position (x,y) */
 
+    for (auto it = d_coins.begin(); it != d_coins.end(); ++it) {
+        if (it->getX() == x && it->getY() == y) {
+            d_coins.erase(it);
+            break; // Sortir de la boucle une fois que l'élément est supprimé
+        }
+    }
+}
 
 void level::clear()
 {

@@ -26,6 +26,8 @@ public:
     room getRoom(int n) const;
     int getNbMonsters() const;
     const std::unique_ptr<monster>& getMonster(int n) const;
+    int coinsPileNumber() const;
+    position coinsPile(int n) const;
     position getposAmulet() const;
     bool getAmulet() const;
     position getposExit() const;
@@ -39,6 +41,7 @@ public:
     void monsterPlayerFight(tabMonster::iterator& monsterIterator);
     void moveMonsters();
     std::unique_ptr<monster> getClosestMonster() const;
+    void removeCoins(int x,int y);
     void clear();
 
 private:
@@ -48,6 +51,7 @@ private:
     bool d_amulet;
     tabMonster d_monsters;
     tabRoom d_rooms;
+    std::vector<position> d_coins;
     bool d_endLevel;
 };
 

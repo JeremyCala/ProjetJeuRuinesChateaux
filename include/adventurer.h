@@ -25,9 +25,10 @@ public:
   void move(int x, int y);
   void setPos(int x, int y);
   void attacked(int strength);
-  int attack() const;
+  int attack();
   void kill(int strength);
   void loseSword();
+  void increasePurse(int coins);
 
 private:
   int d_hp, d_str, d_sword, d_armor, d_purse = 0;
