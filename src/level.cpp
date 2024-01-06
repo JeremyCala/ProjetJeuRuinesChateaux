@@ -251,8 +251,9 @@ void level::removeCoins(int x, int y)
 
 void level::clear()
 {
-    /*Reinitialise le level en vidant les rooms et les monstres*/
+    /*Reinitialise le level en vidant les rooms, les monstres et les pièces*/
     d_monsters.clear();
     d_rooms.clear();
+    d_coins.clear();
 }
 

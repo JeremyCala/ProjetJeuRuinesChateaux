@@ -32,7 +32,7 @@ public:
     void showCreateLevel() const;
     void initCreateLevel() const;
     void showSaveError() const;
-    void showSaveSuccess(int numLevel) const;
+    void showSaveSuccess() const;
 
     /*Game methods*/
     void showRoom(const room& r) const;

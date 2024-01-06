@@ -41,7 +41,7 @@ void monster::move(int x, int y)
     {
         int r = rand()%8;
         position newp = direction[r];
-        if(mvinch(getY()+newp.getY(),getX()+newp.getX()) == '.')
+        if(mvinch(getY()+newp.getY(),getX()+newp.getX()) == '.' || mvinch(getY()+newp.getY(),getX()+newp.getX()) == '$')
         {
             moveFrom(newp.getX(),newp.getY());
             break;
@@ -144,15 +144,15 @@ void sightMonster::move(int x, int y)
             int r = (rand()%2 == 0) ? 1: -1;
             if(rand()%2 == 0)
             {
-                if(mvinch(getY(),getX()+ r) == '.')
+                if(mvinch(getY(),getX()+ r) == '.' || mvinch(getY(),getX()+ r) == '$') // si la case est une room ou un tas de pièce
                 {
-                    set({getX()+r,getY()});
+                    set({getX()+r,getY()}); // le monstre avance
                     break;
                 }
             }
             else
             {
-                if(mvinch(getY()+r,getX()) == '.')
+                if(mvinch(getY()+r,getX()) == '.' || mvinch(getY()+r,getX()) == '$')
                 {
                     set({getX(),getY()+r});
                     break;
@@ -163,7 +163,7 @@ void sightMonster::move(int x, int y)
         else
         {
             position newCell {getNearestCell(x,y)}; //case la plus proche en direction du player
-            if(mvinch(newCell.getY(),newCell.getX()) == '.')
+            if(mvinch(newCell.getY(),newCell.getX()) == '.' || mvinch(newCell.getY(),newCell.getX()) == '$')
                 set(newCell); // se déplace en direction du player
         }
     }

@@ -82,10 +82,7 @@ void game::gameLoop()
         else
             d_menu = true;   
     else if(d_level.gameOver()) //si le niveau a échoué
-    {
         d_gameOver = true;
-        d_num_level = 1;   //revient au 1er niveau
-    }
     
     d_game = false;
 }
@@ -149,9 +146,7 @@ void game::editLevelLoop()
             d_edit = true;
         }
         else if(choice -'0' > 0 && choice - '0' <= d_nb_level)
-        {
             editLevelLoop(choice-'0');
-        }
         
     }
 }
@@ -174,7 +169,7 @@ void game::saveLoop()
     /* Menu de sauvegarde */
     while(d_save)
     {
-        d_screener.showSaveSuccess(d_nb_level);
+        d_screener.showSaveSuccess();
         char choice = getch();
         if (choice == '\n') //retour menu
         {

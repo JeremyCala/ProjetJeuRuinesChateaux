@@ -82,6 +82,7 @@ void screener::showEditMenu() const
 
 void screener::showEditLevel(int nbLevel) const
 {
+    /* Affiche le menu pour éditer les niveaux */
     clear();
     mvprintw(0,0,"EDITER UN NIVEAU EXISTANT\n\n(echap) Retour");
 
@@ -95,6 +96,7 @@ void screener::showEditLevel(int nbLevel) const
 
 void screener::showEditLevel(const level &l) const
 {
+    /* Affiche le level l en mode édition */
     clear();
     for(int i = 0; i < d_width; ++i)
         for(int j = 0; j < d_length; ++j)
@@ -106,6 +108,7 @@ void screener::showEditLevel(const level &l) const
     showMonsters(l);
     showAmulet(l);
     showExit(l);
+    showCoins(l);
     showPlayer(l.getPlayer());
     
     move(l.getPlayer().getY(),l.getPlayer().getX());
@@ -154,12 +157,11 @@ void screener::showSaveError() const
     refresh();
 }
 
-void screener::showSaveSuccess(int numLevel) const
+void screener::showSaveSuccess() const
 {
     /* Affiche le message de sauvegarde réussie */
     clear();
-    mvprintw(1,0,"LE NIVEAU NUMERO   A BIEN ETE SAUVEGARDE !");
-    mvprintw(1,17, "%d", numLevel);
+    mvprintw(1,0,"LE NIVEAU A BIEN ETE SAUVEGARDE !");
     mvprintw(3,0,"Appuyez sur entree pour revenir au menu editer");
     refresh();
 }
@@ -287,6 +289,3 @@ void screener::showCoins(const level &l) const
     for (int i=0; i<l.coinsPileNumber(); ++i)
         mvprintw(l.coinsPile(i).getY(),l.coinsPile(i).getX(),"$");
 }
-
-
-
