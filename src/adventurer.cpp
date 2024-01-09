@@ -21,16 +21,18 @@ int adventurer::getArmor() const { return d_armor; }
 int adventurer::getX() const { return d_pos.getX(); }
 int adventurer::getY() const { return d_pos.getY(); }
 
-void adventurer::reparsword(int coin)
+void adventurer::repairSword()
 {
-  d_sword += coin;
-  d_purse -= coin;
+  /* Répare l'épée grâce à la bourse */
+  d_sword += d_purse;
+  d_purse = 0;
 }
 
-void adventurer::repararmor(int coin)
+void adventurer::repairArmor()
 {
-  d_armor += coin;
-  d_purse -= coin;
+  /* Répare l'armure grâce à la bourse */
+  d_armor += d_purse;
+  d_purse = 0;
 }
 
 void adventurer::move(int x, int y)
@@ -45,27 +47,29 @@ void adventurer::setPos(int x, int y)
 
 void adventurer::attacked(int strength)
 {
-  int damage = (3*strength)/4;
+  /* L'aventurier est attaqué par une force strength */
+
+  int damage = (3*strength)/4; // L'armure encaisse 3/4 des dégats
   d_armor -= damage/2;
   if(d_armor < 0)
   {
-    d_armor += d_purse; //récupère ses points grâce à la bourse
-    d_purse = 0;
-    if (d_armor < 0)  // si ça ne suffit pas
+    repairArmor();
+    if (d_armor < 0)  //Si ça ne suffit pas
     {
       int remains = -d_armor;
-      d_hp -= (strength/4+remains);
+      d_hp -= (strength/4+remains); //Le reste est encaissé par l'aventurier
       d_armor = 0;
     }
   }
   else
-    d_hp -= (strength/4);
+    d_hp -= (strength/4); //L'aventurier encaisse 1/4 des dégats
   if (d_hp<0) d_hp=0;
 }
 
 int adventurer::attack()
 {
   /*Renvoi la force d'attaque*/
+
   int r = rand()%10<8 ? 1 : 0; //proba de 80%
   return (d_str + d_sword) * 0.9 * r;
 }
@@ -73,6 +77,7 @@ int adventurer::attack()
 void adventurer::kill(int strength)
 {
   /* L'aventurier tue le monstre de points de force strength*/
+
   d_str += (1/4)*strength;
   d_hp += (3/4)*strength;
 }
@@ -80,13 +85,20 @@ void adventurer::kill(int strength)
 void adventurer::loseSword()
 {
   /* L'aventurier utilise son épée */
+
   if (d_sword>0)
     d_sword--;
   else
-    d_sword += d_purse; // répare l'épée
+    repairSword(); // répare l'épée
 }
 
 void adventurer::increasePurse(int coins)
 {
-  d_purse += coins;
+  /* L'aventurier ramasse un tas de "coins" pièces et répare son armure et son épée si possible*/
+  if (d_sword == 0)
+    d_sword+=coins;
+  else if (d_armor == 0)
+    d_armor+=coins;
+  else
+    d_purse+=coins;
 }

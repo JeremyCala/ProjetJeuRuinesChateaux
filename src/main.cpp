@@ -2,7 +2,7 @@
 #include "game.h"
 
 
-// g++ -I include -L lib src/*.cpp -o test -lpdcurses
+// Commande compilation : g++ -I include -L lib src/*.cpp -o test -lpdcurses
 
 int main()
 {

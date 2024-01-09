@@ -31,6 +31,7 @@ char screener::getChar(int x, int y) const
 
 void screener::print(int x, int y, const char *c) const
 {
+    /* Ecrit le caractère c au coordonnées (x,y) */
     mvprintw(y,x,c);
 }
 
@@ -41,6 +42,7 @@ void screener::moveCursor(int x, int y) const
 
 void screener::blockInput() const
 {
+    /* Bloque la saisie */
     noecho();
 }
 
@@ -58,6 +60,7 @@ void screener::showMenu(int numLevel, int nbLevel) const
 
 void screener::showEnd(int nbLevel) const
 {
+    /* Message de réussite de tout les niveaux */
     clear();
     mvprintw(0,0,"\nBravo vous etes parvenu a bout des   niveaux !!!");
     mvprintw(1,35, "%d", nbLevel);
@@ -74,6 +77,7 @@ void screener::showGameOver() const
 
 void screener::showEditMenu() const
 {
+    /* Affiche le menu édition */
     clear();
     mvprintw(0,0,"EDITER\n\n1. Creer un nouveau niveau\n2. Editer un niveau actuel\n3. Retour menu");
     mvprintw(6,0,"Votre choix : ");
@@ -82,7 +86,7 @@ void screener::showEditMenu() const
 
 void screener::showEditLevel(int nbLevel) const
 {
-    /* Affiche le menu pour éditer les niveaux */
+    /* Affiche le menu d'édition de niveaux actuels */
     clear();
     mvprintw(0,0,"EDITER UN NIVEAU EXISTANT\n\n(echap) Retour");
 
@@ -118,6 +122,8 @@ void screener::showEditLevel(const level &l) const
 
 void screener::showCreateLevel() const
 {
+    /* Affiche l'ATH de création de niveau */
+
     mvprintw(1,d_length + 1,"CREER UN NIVEAU");
     mvprintw(3,d_length + 1,"Se deplacer : ");
     mvprintw(5,d_length + 8,"Z");
@@ -143,6 +149,7 @@ void screener::showCreateLevel() const
 
 void screener::initCreateLevel() const
 {
+    /* Affiche un niveau vierge pour pouvoir l'éditer ensuite */
     clear();
     for(int i = 0; i < d_width; ++i)
         for(int j = 0; j < d_length; ++j)
@@ -151,6 +158,8 @@ void screener::initCreateLevel() const
 
 void screener::showSaveError() const
 {
+    /* Affiche le message d'erreur de sauvegarde */
+
     mvprintw(25,d_length + 1,"Erreur sauvegarde :");
     mvprintw(26,d_length + 1,"plusieurs ou aucun");
     mvprintw(27,d_length + 1,"@, A ou E");
@@ -160,6 +169,7 @@ void screener::showSaveError() const
 void screener::showSaveSuccess() const
 {
     /* Affiche le message de sauvegarde réussie */
+
     clear();
     mvprintw(1,0,"LE NIVEAU A BIEN ETE SAUVEGARDE !");
     mvprintw(3,0,"Appuyez sur entree pour revenir au menu editer");
@@ -191,9 +201,7 @@ void screener::showMonsters(const level &l) const
 void screener::showAmulet(const level &l) const
 {
     if (!l.getAmulet())
-    {
         mvprintw(l.getposAmulet().getY(), l.getposAmulet().getX(), "A");
-    }
 }
 
 void screener::showExit(const level &l) const
@@ -203,6 +211,8 @@ void screener::showExit(const level &l) const
 
 void screener::showStats(const level &l) const
 {
+    /* Affiche les Stats de l'aventurier en jeu */
+
     mvprintw(15,d_length + 1,"STATS AVENTURIER :"); 
 
     mvprintw(17,d_length + 2,"Hp :"); 
@@ -260,6 +270,8 @@ void screener::showMonsterStats(const monster &m) const
 
 void screener::showLevel(const level &l) const
 {
+    /* Affiche un level complet */
+
     clear();
     for(int i = 0; i < d_width; ++i)
         for(int j = 0; j < d_length; ++j)
@@ -268,11 +280,11 @@ void screener::showLevel(const level &l) const
         showRoom(l.getRoom(i));
 
 
-    showMonsters(l);
     showAmulet(l);
     showATH(l);
     showExit(l);
     showCoins(l);
+    showMonsters(l);
     showPlayer(l.getPlayer());
 
     std::unique_ptr<monster> closestMonster = l.getClosestMonster();
@@ -286,6 +298,7 @@ void screener::showLevel(const level &l) const
 
 void screener::showCoins(const level &l) const
 {
+    /* Affiche les tas de pièce */
     for (int i=0; i<l.coinsPileNumber(); ++i)
         mvprintw(l.coinsPile(i).getY(),l.coinsPile(i).getX(),"$");
 }

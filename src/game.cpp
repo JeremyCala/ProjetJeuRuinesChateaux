@@ -42,15 +42,15 @@ void game::menuLoop()
         char choice = getch();
         switch (choice)
         {
-        case '1':
+        case '1': //JOUER
             d_menu = false;
             d_game = true;
             break;
-        case '2':
+        case '2': //EDITER
             d_menu = false;
             d_edit = true;
             break;
-        case '3':
+        case '3': //QUITTER
             d_menu = false;
             d_isRunning = false;
             break;
@@ -64,12 +64,12 @@ void game::gameLoop()
 {
     /* Boucle du jeu */
 
-    d_level.initLevel(std::to_string(d_num_level)+".txt");
+    d_level.initLevel(std::to_string(d_num_level)+".txt"); //initialisation du niveau actuel
     
     while(d_game && !d_level.endLevel() &&!d_level.gameOver()) //tant que le niveau n'est pas terminé
     {
         d_screener.showLevel(d_level);
-        playerInputGame();
+        playerInputGame(); //Actions du joueur
         d_level.moveMonsters();
     }
 
@@ -82,7 +82,11 @@ void game::gameLoop()
         else
             d_menu = true;   
     else if(d_level.gameOver()) //si le niveau a échoué
+    {
         d_gameOver = true;
+        d_level.clear();
+    }
+        
     
     d_game = false;
 }
@@ -140,12 +144,12 @@ void game::editLevelLoop()
         d_screener.showEditLevel(d_nb_level);
         char choice = getch();
 
-        if(choice == 27)
+        if(choice == 27) //QUITTER (echap)
         {
             d_editLevel = false;
             d_edit = true;
         }
-        else if(choice -'0' > 0 && choice - '0' <= d_nb_level)
+        else if(choice -'0' > 0 && choice - '0' <= d_nb_level) //Si le niveau à éditer choisi est un niveau existant
             editLevelLoop(choice-'0');
         
     }
@@ -157,16 +161,17 @@ void game::editLevelLoop(int numLevel)
 
     levelEditor newLevel{};
     
-    if (newLevel.editLevel(d_screener, numLevel)) //si le niveau a été créer correctement
+    if (newLevel.editLevel(d_screener, numLevel)) //si le niveau a été créé correctement
         d_save = true; //on affiche le message de sauvegarde
     else
-        d_edit = true;
+        d_edit = true; //sinon on revient au menu édition
     d_editLevel = false;
 }
 
 void game::saveLoop()
 {
     /* Menu de sauvegarde */
+
     while(d_save)
     {
         d_screener.showSaveSuccess();
@@ -221,32 +226,32 @@ void game::playerInputGame()
     char choice = getch();
     switch(choice)
     {
-    case 'z':
+    case 'z': //Haut
         d_level.moveAdventurer(0,-1);
         break;
-    case 'q':
+    case 'q': //Gauche
         d_level.moveAdventurer(-1,0);
         break;
-    case 'd':
+    case 'd': //Droite
         d_level.moveAdventurer(1,0);
         break;
-    case 'x':
+    case 'x': //Bas
         d_level.moveAdventurer(0,1);
         break;
-    case 'a':
+    case 'a': //Haut gauche
         d_level.moveAdventurer(-1,-1);
         break;
-    case 'e':
+    case 'e': //Haut droit
         d_level.moveAdventurer(1,-1);
         break;
-    case 'w':
+    case 'w': //Bas gauche
         d_level.moveAdventurer(-1,1);
         break;
-    case 'c':
+    case 'c': //Bas droit
         d_level.moveAdventurer(1,1);
         break;
 
-    case 27:
+    case 27: //QUITTER
         d_game = false;
         d_menu = true;
         d_level.clear();

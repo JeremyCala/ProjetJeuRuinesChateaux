@@ -4,8 +4,8 @@
 class position;
 
 class monster
-{   /* Blind Monsters */
-
+{   
+    /* Blind Monsters */
 public : 
     /* Constructor */
     monster();
@@ -26,6 +26,7 @@ public :
     virtual void move(int x, int y); 
     void attacked(int strength);
     int attack() const;
+    bool allowedToMove(int x, int y) const;
 
 private :
     int d_hp, d_str;

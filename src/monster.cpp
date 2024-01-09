@@ -35,13 +35,14 @@ void monster::set(const position &p)
 void monster::move(int x, int y)
 {
     /*Se déplace au hasard d’un case (horizontale, vertical ou diagonal)*/
+
     position direction[8] = {{-1,1},{-1,0},{-1,-1},{0,-1},
                              {0,1},{1,-1},{1,0},{1,1}} ; //Vecteurs déplacement
     do
     {
         int r = rand()%8;
-        position newp = direction[r];
-        if(mvinch(getY()+newp.getY(),getX()+newp.getX()) == '.' || mvinch(getY()+newp.getY(),getX()+newp.getX()) == '$')
+        position newp = direction[r]; //Position aléatoire
+        if(allowedToMove(getX()+newp.getX(),getY()+newp.getY())) //Si le monstre est autorisé à se déplacer
         {
             moveFrom(newp.getX(),newp.getY());
             break;
@@ -51,6 +52,7 @@ void monster::move(int x, int y)
 
 void monster::attacked(int strength)
 {
+    /* Le monstre est attaqué par une force strength */
     d_hp -= strength;
 }
 
@@ -130,21 +132,21 @@ position sightMonster::getNearestCell(int x, int y) const
 void sightMonster::move(int x, int y)
 {
     /* Se déplace d’une case (horizontal ou vertical) vers l’aventurier 
-    si celui-ci est à moins de huit cases et qu'il n'y a pas de murs entre
+    si celui-ci est à moins de huit cases et qu'il n'y a pas de murs entre lui et l'aventurier
     (ou reste sur l’aventurier s’il est en train de l’attaquer)*/
 
     if (x == getX() && y == getY())  //Le monstre est sur l'aventurier
         return;
     else
     {
-        int dist = sqrt(pow(getX() - x,2) + pow(getY() - y,2));
+        int dist = sqrt(pow(getX() - x,2) + pow(getY() - y,2)); //distance monstre-aventurier
         if(dist > 8 || wallBetween(x,y))
         do
         {
             int r = (rand()%2 == 0) ? 1: -1;
             if(rand()%2 == 0)
             {
-                if(mvinch(getY(),getX()+ r) == '.' || mvinch(getY(),getX()+ r) == '$') // si la case est une room ou un tas de pièce
+                if(allowedToMove(getX()+ r,getY()))
                 {
                     set({getX()+r,getY()}); // le monstre avance
                     break;
@@ -152,7 +154,7 @@ void sightMonster::move(int x, int y)
             }
             else
             {
-                if(mvinch(getY()+r,getX()) == '.' || mvinch(getY()+r,getX()) == '$')
+                if(allowedToMove(getX(),getY()+r))
                 {
                     set({getX(),getY()+r});
                     break;
@@ -163,8 +165,14 @@ void sightMonster::move(int x, int y)
         else
         {
             position newCell {getNearestCell(x,y)}; //case la plus proche en direction du player
-            if(mvinch(newCell.getY(),newCell.getX()) == '.' || mvinch(newCell.getY(),newCell.getX()) == '$')
+            if(allowedToMove(newCell.getX(),newCell.getY()))
                 set(newCell); // se déplace en direction du player
         }
     }
+}
+
+bool monster::allowedToMove(int x, int y) const
+{
+    /* Retourne vrai si le monstre est autorisé à se déplacer sur la case (x,y) */
+    return mvinch(y,x) != '#' && mvinch(y,x) != 'M'; //autorisé si case non mur et non monstre
 }

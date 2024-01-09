@@ -9,8 +9,8 @@ bool levelEditor::createLevel(const screener &S, int numLevel) const
 {
     /* Créer un nouveau niveau */
 
-    S.initCreateLevel();      //initialise en remplissant l'écran de murs
-    return editMod(S, numLevel);
+    S.initCreateLevel();      //Affiche un level vierge
+    return editMod(S, numLevel); //Le level a bien été édité
 }
 
 bool levelEditor::isvalidLevel(const screener &S) const
@@ -52,28 +52,28 @@ void levelEditor::saveLevel(int numLevel, const screener &S) const
 
     std::ofstream file("level/"+std::to_string(numLevel)+".txt", std::ios::trunc);
 
-    int cptLine{0};
+    int cptLine{0}; //Compteur de cases vide, pour sauvegarder les rooms
 
     for(int y = 1; y < S.width()-1; ++y)
     {
         for(int x = 1; x < S.length(); ++x)
         {
-            char c = S.getChar(x,y);
+            char c = S.getChar(x,y); //Récupère le caractère en (x,y)
             switch (c)
             {
-            case '#':
-                if(cptLine > 0)
+            case '#': //Mur
+                if(cptLine > 0) //Si on avait des cases vides avant
                 {
-                    file << "R " << x - cptLine << " " << y << " " << cptLine << " 1\n";
+                    file << "R " << x - cptLine << " " << y << " " << cptLine << " 1\n"; //On sauvegarde une room de longueur cptLine et de largeur 1
                     cptLine = 0;
                 }
                 break;
-            case '.':
+            case '.': //Case vide
                 ++cptLine;
                 break;
-            default:
+            default: //Ni mur ni case vide
                 ++cptLine;
-                file << c <<" "<< x <<" "<< y << '\n';
+                file << c <<" "<< x <<" "<< y << '\n';  //On sauvegarde le caractère et sa position
                 break;
             }
         }
@@ -96,11 +96,11 @@ bool levelEditor::editLevel(const screener &S, int numLevel) const
 
 bool levelEditor::editMod(const screener &S, int numLevel) const
 {
-    /* Mode édition de niveau, renvoi true si il a bien été sauvegardé */
+    /* Mode édition de niveau, renvoi true si il a bien été sauvegardé, false si on quitte */
 
     bool validLevel = false; //le niveau n'est pas valide
 
-    S.showCreateLevel();
+    S.showCreateLevel(); //Interface de création de niveau
     S.moveCursor(50,15);
     int x, y;
 

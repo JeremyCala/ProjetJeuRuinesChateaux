@@ -11,19 +11,20 @@ void level::initLevel(const string &fileName)
 {
     /* Initialise le niveau n°fileName */
 
-    std::ifstream file("level/"+fileName);
+    std::ifstream file("level/"+fileName); //Ouvre le fichier
     char type;
 
-    d_player = adventurer{20,10,10,10};
+    d_player = adventurer{100,10,10,10};
 
     if (file.is_open()) {
 
         std::string ligne;
 
-        while (std::getline(file, ligne)) {
-            std::istringstream iss(ligne);
+        while (std::getline(file, ligne)) //Tant que le fichier n'est pas fini
+        {
+            std::istringstream iss(ligne); //Récupère la ligne
             char type;
-            iss >> type;
+            iss >> type; //récupère le premier caractère de la ligne (le type)
             int x, y;
             switch (type) {
                 case 'R': { // Si la ligne correspond à une salle
@@ -140,30 +141,32 @@ bool level::gameOver() const
 
 void level::moveAdventurer(int x, int y)
 {
+    /* Déplace l'aventurier en fonction de l'obstacle rencontré */
+
     switch (mvinch(d_player.getY() + y, d_player.getX() + x))
     {
     case '.':
-    case 'M':
+    case 'M': //Un monstre ou une case vide
         d_player.move(x,y);
         break;
 
-    case 'A':
+    case 'A': //Amulette
         d_amulet = true;
         d_player.move(x,y);
         break;
 
-    case 'E':
+    case 'E': //Sortie
         d_player.move(x,y);
-        if (d_amulet == true)
+        if (d_amulet == true) //Si l'aventurier possède l'amulette il gagne
         {
             d_endLevel = true;
             clear();
         }
         break;
-    case '$':
+    case '$': //Tas de pièce
         d_player.move(x,y);
         d_player.increasePurse(10);
-        removeCoins(d_player.getX(), d_player.getY());
+        removeCoins(d_player.getX(), d_player.getY()); //Supprime le tas
         break;
     
     default:
@@ -173,7 +176,7 @@ void level::moveAdventurer(int x, int y)
 
 void level::updateMonsterPosition(const position &oldPos, const position &newPos)
 {
-    /* Actualise la position du monstre pour éviter les collisions */
+    /* Actualise la position du monstre pour éviter les collisions entre les monstres */
     mvprintw(oldPos.getY(), oldPos.getX(),".");
     mvprintw(newPos.getY(), newPos.getX(),"M");
     refresh();    
@@ -184,16 +187,16 @@ void level::monsterPlayerFight(tabMonster::iterator& m)
 {
     /* Gère les interactions de combat entre les monstres et le player */
 
-    if ((*m)->getX() == d_player.getX() && (*m)->getY() == d_player.getY())
+    if ((*m)->getX() == d_player.getX() && (*m)->getY() == d_player.getY()) //Si il y a combat
     {
-        d_player.attacked((*m)->attack());
-        (*m)->attacked(d_player.attack());
-        d_player.loseSword(); // perd un point de solidité d'épée
+        d_player.attacked((*m)->attack()); //Aventurier attaque monstre
+        (*m)->attacked(d_player.attack()); //Monstre attaqué par aventurier
+        d_player.loseSword(); //Perd un point de solidité d'épée
 
-        if (!(*m)->alive()) 
+        if (!(*m)->alive()) //Si le monstre est mort
         {
-            d_player.kill((*m)->getStrength());
-            m = d_monsters.erase(m);
+            d_player.kill((*m)->getStrength()); //L'aventurier récupère des stats
+            m = d_monsters.erase(m); //Le monstre est supprimé
         } 
         else
             ++m;
@@ -209,7 +212,7 @@ void level::moveMonsters()
     for(auto monsterIterator = d_monsters.begin(); monsterIterator != d_monsters.end();)
     {
         position old = (*monsterIterator)->getPos();
-        (*monsterIterator)->move(d_player.getX(),d_player.getY());
+        (*monsterIterator)->move(d_player.getX(),d_player.getY()); //Le monstre bouge selon la position de l'aventurier
         updateMonsterPosition(old,(*monsterIterator)->getPos());
         monsterPlayerFight(monsterIterator);
     }
@@ -251,9 +254,9 @@ void level::removeCoins(int x, int y)
 
 void level::clear()
 {
-    /*Reinitialise le level en vidant les rooms, les monstres et les pièces*/
+    /*Reinitialise le level en vidant les rooms, les monstres et les tas de pièces*/
+
     d_monsters.clear();
     d_rooms.clear();
     d_coins.clear();
 }
-

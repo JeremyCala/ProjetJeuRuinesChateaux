@@ -20,8 +20,8 @@ public:
   int getY() const;
 
   /* Methods */
-  void reparsword(int coin);
-  void repararmor(int coin);
+  void repairSword();
+  void repairArmor();
   void move(int x, int y);
   void setPos(int x, int y);
   void attacked(int strength);
